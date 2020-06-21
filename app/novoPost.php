@@ -1,13 +1,4 @@
-<style>
 
-    textarea {
-    resize: none;
-    }
-    textarea.ta10em {
-    height: 10em;
-    }
-
-</style>
 
 <script>
 
@@ -65,30 +56,54 @@
 
         }
         
+        resetForm(){
+
+            this.title.value = '';
+            this.description.value = '';
+            this.postdate.value = '';
+            this.author.value = '';
+
+        }
+
         send(){
             
-            let params = {
+            if(confirm("Confirma o envio desta postagem ?")){
 
-                title: title.value,
-                description: description.value,
-                postdate: postdate.value,
-                author: author.value
+
+                let params = {
+
+                    title: title.value,
+                    description: description.value,
+                    postdate: postdate.value,
+                    author: author.value
+
+                }
+
+                api.post('/send-feed', params )
+
+                .then((success)=>{
+
+                    if(typeof success.status !== 'undefined' && success.status === 200){
+                        
+                        alert(success.data);
+                        
+                        post.resetForm();
+                    
+                    } else {
+                        
+                        throw new Error('Falha ao enviar a postagem');
+
+                    }
+
+                })
+
+                .catch((error)=>{
+
+                    post.handleError(error);
+
+                })
 
             }
-
-            api.post('/send-feed', params )
-
-            .then((success)=>{
-
-                console.log(success);
-
-            })
-
-            .catch((error)=>{
-
-                console.log(error);
-
-            })
 
         }
         
@@ -115,51 +130,53 @@
     const post = new Post();
 
 </script>
+<center>
+    <div class="table-responsive" id="container">
 
-<div class="table-responsive">
+        <form onsubmit="return post.process()">
 
-    <form onsubmit="return post.process()">
+            <table class="table">
+            
+                <tr>        
+                    <td>Título da Postagem:</td>     
+                    <td>
+                        <input type="text" class="form-control" id="title">
+                    </td>
+                </tr>
 
-        <table class="table">
-        
-            <tr>        
-                <td>Título da Postagem:</td>     
-                <td>
-                    <input type="text" class="form-control" id="title">
-                </td>
-            </tr>
+                <tr>        
+                    <td>Descrição:</td>     
+                    <td>
+                        <textarea class="form-control" rows="7" id="description"></textarea>
+                    </td>
+                </tr>
 
-            <tr>        
-                <td>Descrição:</td>     
-                <td>
-                    <textarea class="form-control" rows="7" id="description"></textarea>
-                </td>
-            </tr>
+                <tr>        
+                    <td>Data da Postagem:</td>     
+                    <td>
+                        <input type="datetime-local" class="form-control" id="postdate"></textarea>
+                    </td>
+                </tr>
 
-            <tr>        
-                <td>Data da Postagem:</td>     
-                <td>
-                    <input type="datetime-local" class="form-control" id="postdate"></textarea>
-                </td>
-            </tr>
+                <tr>        
+                    <td>Autor:</td>     
+                    <td>
+                        <input type="text" class="form-control" id="author">
+                    </td>
+                </tr>
 
-            <tr>        
-                <td>Autor:</td>     
-                <td>
-                    <input type="text" class="form-control" id="author">
-                </td>
-            </tr>
+                <tr>        
+                    <td colspan="2" style="text-align:center;">
+                    
+                        <button class="btn btn-info">Enviar</button>
 
-            <tr>        
-                <td colspan="2" style="text-align:center;">
-                
-                    <button class="btn btn-info">Enviar</button>
+                    </td> 
+                </tr>
+            
+            </table>
 
-                </td> 
-            </tr>
-        
-        </table>
+        </form>
 
-    </form>
+    </div>
 
-</div>
+</center>

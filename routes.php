@@ -16,6 +16,13 @@
             require_once './app/novoPost.php';
 
         break;
+
+        case 3:
+
+            require_once './app/enviarMensagem.php';
+
+        break;
+            
             
 
     }

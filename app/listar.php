@@ -1,5 +1,12 @@
 
-    <div id="content">Carregando...</div>
+    <div id="content">
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <center>Carregando...</center>
+    </div>
 
     <script id="templateFeedNews" type="x-handlebars-template">
 
@@ -70,8 +77,17 @@
 
         .then((success)=>{
 
-            mountTable(success.data);
+            if(typeof success.status !== 'undefined' && success.status === 200){
 
+                mountTable(success.data);
+
+            } else {
+
+                throw new Error("Falha");
+
+            }
+
+            
         })
         .catch((error)=>{
 
